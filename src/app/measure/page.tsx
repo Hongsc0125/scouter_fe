@@ -89,7 +89,7 @@ export default function MeasurePage() {
           </div>
 
           {/* 직업 선택 */}
-          <div className="flex flex-col items-center space-y-4 min-w-[200px] sm:min-w-[280px]">
+          <div className="flex flex-col items-center space-y-4 w-[140px] sm:w-[160px] flex-shrink">
             <select 
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
@@ -116,7 +116,7 @@ export default function MeasurePage() {
           </div>
 
           {/* 오른쪽 장비 */}
-          <div className="flex flex-col items-center space-y-4 min-w-[80px]">
+          <div className="flex flex-col items-center space-y-4 w-[80px]">
             {equipmentRight.map((item) => (
               <Button
                 key={item}
