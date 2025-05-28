@@ -55,108 +55,119 @@ export default function MeasurePage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6 flex justify-center">
-      <div className="w-full max-w-7xl grid grid-cols-12 gap-6">
-        {/* 룬 선택 모달 */}
-        <RuneSelectModal 
-          isOpen={isRuneModalOpen} 
-          onClose={() => setIsRuneModalOpen(false)} 
-          slot={activeSlot}
-          onSelectRune={handleSelectRune}
-        />
-        {/* Column1: Left Equipment */}
-        <div className="col-span-3 flex flex-col items-center space-y-4">
-          {equipmentLeft.map((item) => (
-            <Button
-              key={item}
-              variant={selectedRunes[item as EquipmentSlot] ? "default" : "outline"}
-              disabled={!item}
-              className={`w-20 h-20 flex flex-col items-center justify-center gap-1 p-0 overflow-hidden ${!item ? 'opacity-50 cursor-not-allowed' : selectedRunes[item as EquipmentSlot] ? 'border-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-              onClick={() => item && handleSlotClick(item as EquipmentSlot)}
+    <div className="min-h-screen bg-background p-4 sm:p-6 flex flex-col items-center">
+      {/* 상단: 장비 및 직업 선택 (가로 스크롤) */}
+      <div className="w-full max-w-7xl mb-6">
+        <div className="flex flex-nowrap overflow-x-auto pb-4 gap-4 sm:gap-6 scrollbar-hide">
+          {/* 왼쪽 장비 */}
+          <div className="flex flex-col items-center space-y-4 min-w-[80px]">
+            {equipmentLeft.map((item) => (
+              <Button
+                key={item}
+                variant={selectedRunes[item as EquipmentSlot] ? "default" : "outline"}
+                disabled={!item}
+                className={`w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex flex-col items-center justify-center gap-1 p-0 overflow-hidden ${
+                  !item ? 'opacity-50 cursor-not-allowed' : 
+                  selectedRunes[item as EquipmentSlot] ? 'border-primary shadow-sm' : 
+                  'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={() => item && handleSlotClick(item as EquipmentSlot)}
+              >
+                {selectedRunes[item as EquipmentSlot] ? (
+                  <SelectedRuneDisplay 
+                    rune={selectedRunes[item as EquipmentSlot]!} 
+                    onRemove={() => handleRemoveRune(item as EquipmentSlot)} 
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center w-full h-full p-1">
+                    <Plus className="h-4 w-4 sm:h-6 sm:w-6" />
+                    <span className="text-[10px] sm:text-xs mt-1">{item}</span>
+                  </div>
+                )}
+              </Button>
+            ))}
+          </div>
+
+          {/* 직업 선택 */}
+          <div className="flex flex-col items-center space-y-4 min-w-[200px] sm:min-w-[280px]">
+            <select 
+              value={selectedJob}
+              onChange={(e) => setSelectedJob(e.target.value)}
+              className="w-full h-12 px-4 py-2 rounded-md border border-input bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              {selectedRunes[item as EquipmentSlot] ? (
-                <SelectedRuneDisplay 
-                  rune={selectedRunes[item as EquipmentSlot]!} 
-                  onRemove={() => handleRemoveRune(item as EquipmentSlot)} 
+              <option value="">직업 선택</option>
+              {job.map((jobName) => (
+                <option key={jobName} value={jobName}>
+                  {jobName}
+                </option>
+              ))}
+            </select>
+            <div className="w-full h-64 sm:h-80 bg-card rounded-2xl border border-border flex items-center justify-center overflow-hidden">
+              {selectedJob ? (
+                <img 
+                  src={`/images/job/${selectedJob}.png`} 
+                  alt={selectedJob}
+                  className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                  <Plus className="h-6 w-6" />
-                  <span className="text-xs mt-1">{item}</span>
-                </div>
+                <Plus className="text-muted-foreground" size={48} />
               )}
-            </Button>
-          ))}
-        </div>
+            </div>
+          </div>
 
-        {/* Column2: Job & Avatar */}
-        <div className="col-span-3 flex flex-col items-center space-y-4">
-          <select 
-            value={selectedJob}
-            onChange={(e) => setSelectedJob(e.target.value)}
-            className="w-48 h-12 px-4 py-2 rounded-md border border-input bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          >
-            <option value="">직업 선택</option>
-            {job.map((jobName) => (
-              <option key={jobName} value={jobName}>
-                {jobName}
-              </option>
+          {/* 오른쪽 장비 */}
+          <div className="flex flex-col items-center space-y-4 min-w-[80px]">
+            {equipmentRight.map((item) => (
+              <Button
+                key={item}
+                variant={selectedRunes[item as EquipmentSlot] ? "default" : "outline"}
+                className={`w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex flex-col items-center justify-center gap-1 p-0 overflow-hidden ${
+                  selectedRunes[item as EquipmentSlot] ? 'border-primary shadow-sm' : 
+                  'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={() => handleSlotClick(item as EquipmentSlot)}
+              >
+                {selectedRunes[item as EquipmentSlot] ? (
+                  <SelectedRuneDisplay 
+                    rune={selectedRunes[item as EquipmentSlot]!} 
+                    onRemove={() => handleRemoveRune(item as EquipmentSlot)} 
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center w-full h-full p-1">
+                    <Plus className="h-4 w-4 sm:h-6 sm:w-6" />
+                    <span className="text-[10px] sm:text-xs mt-1">{item}</span>
+                  </div>
+                )}
+              </Button>
             ))}
-          </select>
-          <div className="w-64 h-96 bg-card rounded-2xl border border-border flex items-center justify-center overflow-hidden">
-            {selectedJob ? (
-              <img 
-                src={`/images/job/${selectedJob}.png`} 
-                alt={selectedJob}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <Plus className="text-muted-foreground" size={48} />
-            )}
           </div>
         </div>
-
-        {/* Column3: Right Equipment */}
-        <div className="col-span-3 flex flex-col items-center space-y-4">
-          {equipmentRight.map((item) => (
-            <Button
-              key={item}
-              variant={selectedRunes[item as EquipmentSlot] ? "default" : "outline"}
-              className={`w-20 h-20 flex flex-col items-center justify-center gap-1 p-0 overflow-hidden ${selectedRunes[item as EquipmentSlot] ? 'border-primary shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
-              onClick={() => handleSlotClick(item as EquipmentSlot)}
-            >
-              {selectedRunes[item as EquipmentSlot] ? (
-                <SelectedRuneDisplay 
-                  rune={selectedRunes[item as EquipmentSlot]!} 
-                  onRemove={() => handleRemoveRune(item as EquipmentSlot)} 
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center w-full h-full">
-                  <Plus className="h-6 w-6" />
-                  <span className="text-xs mt-1">{item}</span>
-                </div>
-              )}
-            </Button>
-          ))}
-        </div>
-
-        {/* Column4: Spec Inputs */}
-        <div className="col-span-3 flex flex-col space-y-6">
-          <Card className="border-border">
-            <CardHeader className="bg-card border-b border-border p-3">
-              <h2 className="text-sm font-medium">스펙 입력</h2>
-            </CardHeader>
-            <CardContent className="grid grid-cols-1 gap-3 p-3">
-              {primarySpecs.map(({ label, key }) => (
-                <div key={key} className="flex justify-between items-center">
-                  <span className="text-xs text-muted-foreground">{label}</span>
-                  <Input id={key} type="number" placeholder="0" className="w-20 h-8 text-sm" />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
       </div>
+
+      {/* 하단: 스탯 입력 */}
+      <div className="w-full max-w-7xl">
+        <Card className="border-border">
+          <CardHeader className="bg-card border-b border-border p-3">
+            <h2 className="text-sm font-medium">스펙 입력</h2>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-3">
+            {primarySpecs.map(({ label, key }) => (
+              <div key={key} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
+                <span className="text-xs text-muted-foreground">{label}</span>
+                <Input id={key} type="number" placeholder="0" className="w-full sm:w-24 h-8 text-sm" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* 룬 선택 모달 */}
+      <RuneSelectModal 
+        isOpen={isRuneModalOpen} 
+        onClose={() => setIsRuneModalOpen(false)} 
+        slot={activeSlot}
+        onSelectRune={handleSelectRune}
+      />
     </div>
   );
 }
