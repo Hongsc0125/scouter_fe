@@ -56,11 +56,11 @@ export default function MeasurePage() {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 flex flex-col items-center">
-      {/* 상단: 장비 및 직업 선택 (가로 스크롤) */}
+      {/* 상단: 장비 및 직업 선택 */}
       <div className="w-full max-w-7xl mb-6">
-        <div className="flex flex-nowrap overflow-x-auto pb-4 gap-4 sm:gap-6 scrollbar-hide">
+        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
           {/* 왼쪽 장비 */}
-          <div className="flex flex-col items-center space-y-4 min-w-[80px]">
+          <div className="flex flex-col items-center space-y-4 w-[80px]">
             {equipmentLeft.map((item) => (
               <Button
                 key={item}
@@ -89,7 +89,7 @@ export default function MeasurePage() {
           </div>
 
           {/* 직업 선택 */}
-          <div className="flex flex-col items-center space-y-4 w-[140px] sm:w-[160px] flex-shrink">
+          <div className="flex flex-col items-center space-y-4 w-[160px] sm:w-[200px]">
             <select 
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
