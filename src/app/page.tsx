@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Footer } from '@/components/layout/Footer';
 
 export default function Home() {
   return (
@@ -23,9 +22,6 @@ export default function Home() {
           </Button>
         </Link>
       </section>
-
-      {/* Footer */}
-      <Footer />
     </div>
   );
 }

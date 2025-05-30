@@ -24,8 +24,7 @@ export default function MeasurePage() {
     { label: '스킬 위력', key: 'skill' },
     { label: '광역 강화', key: 'aoe' },
     { label: '치명타', key: 'crit' },
-    { label: '추가타', key: 'extra' },
-    { label: '궁극기', key: 'ult' }
+    { label: '추가타', key: 'extra' }
   ];
   const job = ['힐러', '화염술사', '전사', '장궁병', '음유시인', '악사', '수도사', '석궁사수', '사제', '빙결술사', '마법사', '듀얼블레이드', '도적', '댄서', '대검전사', '궁수'];
 
@@ -56,11 +55,11 @@ export default function MeasurePage() {
 
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 flex flex-col items-center">
-      {/* 상단: 장비 및 직업 선택 */}
+      {/* 장비·직업 선택 + 스펙 입력 (flex-wrap) */}
       <div className="w-full max-w-7xl mb-6">
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+        <div className="flex flex-wrap justify-center items-start gap-6">
           {/* 왼쪽 장비 */}
-          <div className="flex flex-col items-center space-y-4 w-[80px]">
+          <div className="flex flex-col items-center space-y-4 w-auto sm:w-[80px]">
             {equipmentLeft.map((item) => (
               <Button
                 key={item}
@@ -89,7 +88,7 @@ export default function MeasurePage() {
           </div>
 
           {/* 직업 선택 */}
-          <div className="flex flex-col items-center space-y-4 w-[160px] sm:w-[200px]">
+          <div className="flex flex-col items-center space-y-4 w-[150px] flex-shrink-0">
             <select 
               value={selectedJob}
               onChange={(e) => setSelectedJob(e.target.value)}
@@ -102,13 +101,15 @@ export default function MeasurePage() {
                 </option>
               ))}
             </select>
-            <div className="w-full h-64 sm:h-80 bg-card rounded-2xl border border-border flex items-center justify-center overflow-hidden">
+            <div className="w-full h-64 sm:h-80 bg-card rounded-2xl flex items-center justify-center overflow-hidden">
               {selectedJob ? (
-                <img 
-                  src={`/images/job/${selectedJob}.png`} 
-                  alt={selectedJob}
-                  className="w-full h-full object-cover"
-                />
+                <div className="w-full h-full flex items-center justify-center p-2">
+                  <img 
+                    src={`/images/job/${selectedJob}.png`} 
+                    alt={selectedJob}
+                    className="max-w-full max-h-full object-contain"
+                  />
+                </div>
               ) : (
                 <Plus className="text-muted-foreground" size={48} />
               )}
@@ -116,7 +117,7 @@ export default function MeasurePage() {
           </div>
 
           {/* 오른쪽 장비 */}
-          <div className="flex flex-col items-center space-y-4 w-[80px]">
+          <div className="flex flex-col items-center space-y-4 w-auto sm:w-[80px]">
             {equipmentRight.map((item) => (
               <Button
                 key={item}
@@ -141,24 +142,32 @@ export default function MeasurePage() {
               </Button>
             ))}
           </div>
-        </div>
-      </div>
 
-      {/* 하단: 스탯 입력 */}
-      <div className="w-full max-w-7xl">
-        <Card className="border-border">
-          <CardHeader className="bg-card border-b border-border p-3">
-            <h2 className="text-sm font-medium">스펙 입력</h2>
-          </CardHeader>
-          <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-3">
-            {primarySpecs.map(({ label, key }) => (
-              <div key={key} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1">
-                <span className="text-xs text-muted-foreground">{label}</span>
-                <Input id={key} type="number" placeholder="0" className="w-full sm:w-24 h-8 text-sm" />
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+          {/* 스펙 입력 카드 */}
+          <div className="w-full lg:w-auto">
+            <Card className="border-border">
+              <CardHeader className="bg-card border-b border-border py-0 px-2">
+                <h2 className="text-lg font-medium m-0">스펙 입력</h2>
+              </CardHeader>
+              <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 p-3">
+                {primarySpecs.map(({ label, key }) => (
+                  <div
+                    key={key}
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1"
+                  >
+                    <span className="text-xs text-muted-foreground">{label}</span>
+                    <Input
+                      id={key}
+                      type="number"
+                      placeholder="0"
+                      className="w-full sm:w-24 h-8 text-sm"
+                    />
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
 
       {/* 룬 선택 모달 */}
