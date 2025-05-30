@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
+import Image from 'next/image';
 import { RuneSelectModal } from '@/components/runes/RuneSelectModal';
 import { SelectedRuneDisplay } from '@/components/runes/SelectedRuneDisplay';
 import { Rune, EquipmentSlot } from '@/types/rune';
@@ -104,11 +105,15 @@ export default function MeasurePage() {
             <div className="w-full h-64 sm:h-80 bg-card rounded-2xl flex items-center justify-center overflow-hidden">
               {selectedJob ? (
                 <div className="w-full h-full flex items-center justify-center p-2">
-                  <img 
-                    src={`/images/job/${selectedJob}.png`} 
+                  <div className="relative w-full h-full">
+                  <Image 
+                    src={`/images/job/${selectedJob}.png`}
                     alt={selectedJob}
-                    className="max-w-full max-h-full object-contain"
+                    fill
+                    className="object-contain"
+                    priority
                   />
+                </div>
                 </div>
               ) : (
                 <Plus className="text-muted-foreground" size={48} />
